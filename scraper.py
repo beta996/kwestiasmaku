@@ -37,6 +37,9 @@ while True:
         soup = BeautifulSoup(html_recipe, 'html.parser')
         name = soup.find("h1", {"class": "przepis"}).get_text().strip()
         soup = soup.find("div", {"class": "group-skladniki"})
+        if soup is None:
+            print('no ingredients for recipe')
+            continue
         ingredients = soup.find_all("li")
         ingredients = [ingredient.get_text().strip() for ingredient in ingredients]
         recipe = Recipe(link, name, ingredients)
