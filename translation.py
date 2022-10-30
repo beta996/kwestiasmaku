@@ -12,17 +12,26 @@ def query(payload):
     return response.json(), response.status_code
 
 
-recipe_df = pd.read_csv('./translated_all_recipes.csv')
-
-for i, ingr in enumerate(recipe_df['ingredients']):
-    if not pd.isnull(recipe_df.loc[i, 'eng_ingredients']):
-        continue
-    output, status_code = query({
-        "inputs": ingr,
-    })
+def translate(text:str):
+    output, status_code = query({"inputs": text.lower()})
     if status_code != 200:
-        print(output)
-        break
-    print(f"{i} out of {len(recipe_df)} | {output}")
-    recipe_df.loc[i, 'eng_ingredients'] = output[0]['translation_text']
-    recipe_df.to_csv('./translated_all_recipes.csv', index=False)
+        raise RuntimeError(f"Status not 200! But {status_code}")
+    return output[0]['translation_text']
+
+
+if __name__ == '__main__':
+
+    recipe_df = pd.read_csv('./translated_all_recipes.csv')
+
+    for i, ingr in enumerate(recipe_df['ingredients']):
+        if not pd.isnull(recipe_df.loc[i, 'eng_ingredients']):
+            continue
+        output, status_code = query({
+            "inputs": ingr,
+        })
+        if status_code != 200:
+            print(output)
+            break
+        print(f"{i} out of {len(recipe_df)} | {output}")
+        recipe_df.loc[i, 'eng_ingredients'] = output[0]['translation_text']
+        recipe_df.to_csv('./translated_all_recipes.csv', index=False)
