@@ -6,13 +6,13 @@
 </head>
 <body>
 <h1>
-    Welcome to our polish super cook page! Here you can access >2k recipes (also vegan!) Enjoy!
+    Witaj na stronie, gdzie możesz odnaleźć ponad 2 tys. przepisów (także wegańskie!) Powodzenia!
 </h1>
 <form action="display_recipes">
     <label for="ingredient">
-        Enter ingredient!
+        Wpisz tutaj składniki rozdzielając je spacją!
     </label>
-    <input type="text" id="ingredient" name="list_ingredients" placeholder="Pomidor">
+    <input type="text" id="ingredient" name="list_ingredients" required placeholder="pomidor brukselka ..." oninvalid="this.setCustomValidity('Podaj min. 1 składnik!')" oninput="this.setCustomValidity('')">
     <input type="submit" value="Submit">
 </form>
 </body>
